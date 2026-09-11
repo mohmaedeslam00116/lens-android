@@ -11,11 +11,13 @@ Decisions hard to reverse — implementation stack, state management, background
 
 We record architecture decisions as short ADRs in `docs/adr/`, numbered `NNNN-slug.md`, each stating context, decision, and consequences. Every significant, hard-to-reverse choice gets an ADR before implementation code lands.
 
-The first substantive ADRs expected for LENS Android:
+The substantive ADRs for LENS Android:
 
-- ADR-0001: mobile implementation stack (native Kotlin/Compose vs Flutter vs other)
-- ADR-0002: how the desktop's embedded TypeScript engine is reused on mobile (`ConnectionBridge` in `CONTEXT.md`)
-- ADR-0003: background execution model for long research runs (`ForegroundResearchRun`)
+- ADR-0001: mobile implementation stack — **landed**: Flutter (Dart)
+- ADR-0002: engine-reuse ratification (hybrid Dart port with desktop-TS parity oracle; pending the on-device spike numbers)
+- ADR-0003: mobile architecture (state, structure, execution model, navigation) — **landed**; includes the background-execution model for `ForegroundResearchRun`
+
+_(Originally ADR-0003 was reserved for background execution alone; the architecture ADR subsumed it, per the reconciliation recorded during [PR #11](https://github.com/mohmaedeslam00116/lens-android/pull/11)'s review.)_
 
 ## Consequences
 
