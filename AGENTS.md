@@ -8,7 +8,7 @@ Operational guidelines, conventions, and context for AI agents working in this r
 
 - **Sibling project (feature reference)**: [mohmaedeslam00116/lens-desktop](https://github.com/mohmaedeslam00116/lens-desktop) — the Electron desktop application. Read its `PRODUCT.md`, `BRAND.md`, `DESIGN.md`, and `CONTEXT.md` when porting behavior or design.
 - **Goal**: full feature parity with the desktop version, adapted to mobile UX — a standalone research app on par with ChatGPT / Perplexity-class assistants.
-- **Runtime & stack**: not yet decided. Once the implementation stack is chosen (e.g., native Kotlin + Jetpack Compose, or Flutter), record it here and in `docs/adr/` before writing application code.
+- **Runtime & stack**: **Flutter (Dart)** per [ADR-0001](docs/adr/0001-flutter-stack.md) — Android first, phones only for v1, bilingual (AR/EN) from day one. State management, module structure, and the engine-reuse mechanism are still being decided on the [wayfinder map](https://github.com/mohmaedeslam00116/lens-android/issues/1).
 - **Domain model**: see `CONTEXT.md` for the glossary shared with the desktop project, plus mobile-specific terms.
 
 ## Agent skills
