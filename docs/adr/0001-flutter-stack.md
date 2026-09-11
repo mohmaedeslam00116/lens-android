@@ -1,6 +1,6 @@
 # 0001 — Flutter as the implementation stack for LENS Android v1
 
-- **Status**: accepted (pending merge of this PR)
+- **Status**: accepted
 - **Date**: 2026-09-11
 - **Resolves**: [Research: Flutter vs Kotlin/Compose for LENS Android](https://github.com/mohmaedeslam00116/lens-android/issues/2) (user approved the recommendation on 2026-09-11)
 
@@ -28,7 +28,7 @@ Consequences of this choice that are now settled:
 ## Cautions carried forward (not blockers)
 
 1. Use `flutter_markdown_plus` (or `markdown_widget`), never the discontinued `flutter_markdown`; pin the dependency and be prepared to vendor-patch.
-2. The engine decision (#3) must include an on-device QuickJS performance spike (BM25 + dedup + ingestion bound), not paper analysis.
+2. The engine decision ([Research: reusing the desktop TypeScript engine on Android](https://github.com/mohmaedeslam00116/lens-android/issues/3)) must include an on-device QuickJS performance spike (BM25 + dedup + ingestion bound), not paper analysis.
 3. `ForegroundResearchRun` must degrade gracefully under OEM battery-killer variance (persisted session checkpoints; never assume the service survives).
 
 ## Alternatives considered
