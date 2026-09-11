@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_js/flutter_js.dart';
 
 import 'src/bm25.dart';
 import 'src/citation_sse.dart';
@@ -86,6 +88,30 @@ Executive summary: evidence supports [1], contradicts [49], and hallucinates [51
         return 'kept=${RegExp(r'\[\d+\]').allMatches(cleaned).length} of ${RegExp(r'\[\d+\]').allMatches(draft).length}';
       });
 
+  /// Assembles the identical workloads (same corpus bytes) for the JS twin:
+  /// the QuickJS side measures the interpreter tax on matched inputs.
+  String _quickJsCorpusJson() {
+    final docs = generateCorpus();
+    final dedupDocs = generateCorpus(size: 200);
+    return jsonEncode({
+      'docs': [for (final d in docs) {'id': d.id, 'text': d.text}],
+      'queries': benchmarkQueries,
+      'dedup': [for (var i = 0; i < dedupDocs.length; i++) {'url': 'https://example.org/$i', 'text': dedupDocs[i].text}],
+    });
+  }
+
+  Future<void> _runQuickJs() => _asyncRun('QuickJS twin (same workloads)', () async {
+        final rt = getJavascriptRuntime();
+        final twin = await rootBundle.loadString('assets/engine_twin.js');
+        rt.evaluate(twin);
+        final corpusJson = _quickJsCorpusJson();
+        final result = rt.evaluate('bench(${jsonEncode(corpusJson)})');
+        if (result.isError) {
+          return 'ERROR: ${result.stringResult}';
+        }
+        return result.stringResult;
+      });
+
   Future<void> _runSse() => _asyncRun('SSE parse + ring replay', () async {
         final parser = SseParser();
         final ring = EventRingBuffer<String>(300);
@@ -126,6 +152,7 @@ Executive summary: evidence supports [1], contradicts [49], and hallucinates [51
                 FilledButton(onPressed: _runDedup, child: const Text('Dedup (200 docs)')),
                 FilledButton(onPressed: _runCitation, child: const Text('Citation (50 src)')),
                 FilledButton(onPressed: _runSse, child: const Text('SSE 10k events')),
+                FilledButton(onPressed: _runQuickJs, child: const Text('QuickJS twin')),
               ],
             ),
           ),
