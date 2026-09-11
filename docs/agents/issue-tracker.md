@@ -2,6 +2,8 @@
 
 Issues and specs for this repo live as GitHub issues in `mohmaedeslam00116/lens-android`. Use the `gh` CLI for all operations.
 
+Tickets end via PRs: the PR body must contain `Closes #<n>` so the issue closes automatically on merge. See `docs/agents/workflow.md` for the mandatory PR lifecycle (review subagent → fix subagent → merge).
+
 ## Conventions
 
 - **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies.

@@ -16,6 +16,7 @@ Operational guidelines, conventions, and context for AI agents working in this r
 ### Skill Router
 
 - **Flow Routing**: Consult `/ask-matt` (`.agents/skills/ask-matt/SKILL.md`) to route work along the standard flow: `idea` → `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement` (TDD) → `/code-review` → PR.
+- **Task Lifecycle & PR Gate (MANDATORY)**: Every completed task ships as a PR with a review-subagent Failure Report and a fix-subagent pass before merge; the ticket ends when the linked GitHub Issue closes on merge. Read `docs/agents/workflow.md` before starting any task — this overrides the default `/code-review`-then-commit close-out.
 
 ### Issue tracker
 
