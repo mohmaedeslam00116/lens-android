@@ -17,7 +17,7 @@ The substantive ADRs for LENS Android:
 - ADR-0002: engine-reuse ratification (hybrid Dart port with desktop-TS parity oracle; pending the on-device spike numbers)
 - ADR-0003: mobile architecture (state, structure, execution model, navigation) — **landed**; includes the background-execution model for `ForegroundResearchRun`
 
-_(Originally ADR-0003 was reserved for background execution alone; the architecture ADR subsumed it, per the reconciliation recorded during its review.)_
+_(Originally ADR-0003 was reserved for background execution alone; the architecture ADR subsumed it, per the reconciliation recorded during [PR #11](https://github.com/mohmaedeslam00116/lens-android/pull/11)'s review.)_
 
 ## Consequences
 

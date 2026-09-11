@@ -16,7 +16,7 @@ With the stack fixed (Flutter/Dart) and the engine strategy fixed (Dart port wit
    ```
    lib/
    ├── features/{research,discover,library,settings}/
-   ├── core/               # routing, theming (DESIGN.md tokens), l10n, di
+   ├── core/               # routing, theming (tokens from lens-desktop's DESIGN.md), l10n, di
    packages/
    ├── lens_engine/        # pure Dart kernels; spike kernels graduate here
    └── lens_vault/         # drift DB, secure key storage
