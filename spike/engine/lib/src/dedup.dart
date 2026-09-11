@@ -24,7 +24,14 @@ class DedupDecision {
 
   final DedupRecord record;
   final DedupVerdict verdict;
+
+  /// 64-bit SimHash as 16 hex chars. Empty string exactly when [verdict] is
+  /// [DedupVerdict.duplicateUrl] or [DedupVerdict.duplicateContent] — those
+  /// verdicts exit before the simhash is computed. The gold-vector schema
+  /// pins this: `simhashHex: ""` on early-exit verdicts, hex otherwise.
   final String simhashHex;
+
+  /// First-seen record's URL that this record duplicates; null when unique.
   final String? matchedUrl;
 }
 

@@ -6,20 +6,25 @@ import 'package:lens_engine_spike/src/dedup.dart';
 import 'package:lens_engine_spike/src/tokenization.dart';
 
 void main() {
-  group('tokenization (parity surface — gold vectors pin the exact output)', () {
-    test('arabic pipeline: diacritics strip, normalize, clitic stem', () {
-      final tokens = analyze('الذكاءُ الاصطناعيّ في الأسواق');
-      expect(tokens, isNotEmpty);
-      expect(tokens.first, isNot(contains('\u064F'))); // no diacritics survive
-      for (final t in tokens) {
-        expect(t, isNot(anyOf(startsWith('الأسواق')))); // sanity
-      }
+  group('tokenization (parity surface — exact output pinned)', () {
+    test('arabic pipeline: diacritic strip → normalize → clitic stem', () {
+      // الذكاءُ → strip diacritics → الذكاء → strip ال (length>4 kept) → ذكاء
+      // الاصطناعيّ → الاصطناعي → strip ال → اصطناعي
+      // الأسواق → الاسواق (أ→ا) → strip ال → اسواق
+      expect(analyze('الذكاءُ الاصطناعيّ في الأسواق'),
+          ['ذكاء', 'اصطناعي', 'في', 'اسواق']);
     });
 
-    test('bilingual stream splits cleanly', () {
-      final tokens = analyze('Research الذكاء research');
-      expect(tokens.where((t) => t == 'research').length, 2);
-      expect(tokens, contains(isNot('الذكاء'))); // stemmed form differs
+    test('mixed AR/EN stream splits and stems in one pass', () {
+      expect(analyze('Research الذكاء research'),
+          ['research', 'ذكاء', 'research']);
+    });
+
+    test('clitic stemming never leaves a stem shorter than 3 chars', () {
+      // بال data: `بالبيانات` strips ال from البيانات (remainder ≥ 3).
+      expect(stemArabic(normalizeToken('البيانات')), 'بيانات');
+      // الذي → stripping ال would leave ذي (2 chars < 3) → blocked.
+      expect(stemArabic(normalizeToken('الذي')), 'الذي');
     });
   });
 
