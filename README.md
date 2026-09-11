@@ -23,7 +23,7 @@ Mobile-specific adaptations (offline-first storage, foreground research runs wit
 
 ## Status
 
-🚧 **Repository bootstrap.** The implementation stack and architecture are being decided; no application code yet. See `CONTEXT.md` for the domain model and `docs/adr/` for architectural decisions as they land.
+🚧 **Planning.** The stack is decided — **Flutter (Dart)** per [ADR-0001](docs/adr/0001-flutter-stack.md) — and the remaining architecture decisions (engine reuse, module structure) are being charted on the [wayfinder map](https://github.com/mohmaedeslam00116/lens-android/issues/1). No application code yet. See `CONTEXT.md` for the domain model and `docs/adr/` for decisions as they land.
 
 ## Repository layout
 
@@ -34,7 +34,7 @@ lens-android/
 ├── docs/
 │   ├── agents/          # Issue tracker, triage labels, and domain doc conventions
 │   └── adr/             # Architecture Decision Records
-└── (app module lands here once the stack is chosen)
+└── lib/ or src/         # the Flutter app module (see ADR-0001; structure pending ADR-0003)
 ```
 
 ## Related
