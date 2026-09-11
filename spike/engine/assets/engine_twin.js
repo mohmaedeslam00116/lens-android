@@ -260,15 +260,29 @@ globalThis.bench = function (corpusJson) {
 
   var t3 = Date.now();
   var sse = { buf: '', count: 0 };
+  // Ring mirroring the Dart probe's workload: 300-capacity, push per event,
+  // replay since=last-50 — all inside the timed window (matched workloads).
+  var RING_CAP = 300;
+  var ring = new Array(RING_CAP), ringStart = 0, ringSize = 0, ringNext = 0;
   for (var e = 0; e < 10000; e++) {
-    feedSse(sse, 'event: telemetry\ndata: {"i":' + e + '}\n\n');
+    var frame = 'event: telemetry\ndata: {"i":' + e + '}\n\n';
+    feedSse(sse, frame);
+    if (ringSize === RING_CAP) {
+      ring[ringStart] = frame; ringStart = (ringStart + 1) % RING_CAP;
+    } else {
+      ring[(ringStart + ringSize) % RING_CAP] = frame; ringSize++;
+    }
+    ringNext++;
   }
+  var since = ringNext - 1 - 50;
+  var firstAvail = ringNext - ringSize;
+  var replayed = since < firstAvail ? ringSize : (ringNext - 1 - since);
   var sseMs = Date.now() - t3;
 
   return JSON.stringify({
     bmBuildMs: bmMs, bmQueryMs: queryMs, topQuery: queryResults[0] ? queryResults[0].slice(0, 3) : [],
     dedupMs: dedupMs, dedupVerdicts: v,
     citationMs: citMs, kept: (cleaned.match(/\[\d+\]/g) || []).length,
-    sseMs: sseMs, sseEvents: sse.count
+    sseMs: sseMs, sseEvents: sse.count, ringReplayed: replayed
   });
 };

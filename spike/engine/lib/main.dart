@@ -103,9 +103,14 @@ Executive summary: evidence supports [1], contradicts [49], and hallucinates [51
   Future<void> _runQuickJs() => _asyncRun('QuickJS twin (same workloads)', () async {
         final rt = getJavascriptRuntime();
         final twin = await rootBundle.loadString('assets/engine_twin.js');
-        rt.evaluate(twin);
+        final load = rt.evaluate(twin);
+        if (load.isError) {
+          return 'TWIN LOAD ERROR: ${load.stringResult}';
+        }
         final corpusJson = _quickJsCorpusJson();
-        final result = rt.evaluate('bench(${jsonEncode(corpusJson)})');
+        // Raw JSON once into a global — no double-encoding of a large payload.
+        rt.evaluate('var CORPUS = $corpusJson;');
+        final result = rt.evaluate('bench(CORPUS)');
         if (result.isError) {
           return 'ERROR: ${result.stringResult}';
         }
