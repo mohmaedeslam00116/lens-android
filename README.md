@@ -34,7 +34,7 @@ lens-android/
 ├── docs/
 │   ├── agents/          # Issue tracker, triage labels, and domain doc conventions
 │   └── adr/             # Architecture Decision Records
-└── lib/ or src/         # the Flutter app module (see ADR-0001; structure pending ADR-0003)
+└── lib/                 # the Flutter app module (structure per the wayfinder map)
 ```
 
 ## Related
